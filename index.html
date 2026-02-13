@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Love</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #d4a59a;
+            --secondary: #f4e8e1;
+            --accent: #8b6f62;
+            --text: #4a4a4a;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: 'Cormorant Garamond', serif;
+            background: linear-gradient(135deg, #fdfbfb 0%, #f4e8e1 100%);
+            color: var(--text);
+            overflow-x: hidden;
+        }
+
+        /* Floating hearts animation */
+        .hearts-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 20px;
+            color: rgba(212, 165, 154, 0.3);
+            animation: float 15s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 80px 20px;
+            animation: fadeInDown 1.2s ease-out;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3rem, 8vw, 6rem);
+            color: var(--accent);
+            margin-bottom: 20px;
+            font-weight: 600;
+            letter-spacing: 2px;
+        }
+
+        .hero .subtitle {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            color: var(--primary);
+            font-style: italic;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 0.5s forwards;
+        }
+
+        /* Photo Gallery Grid */
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin: 80px 0;
+        }
+
+        .photo-card {
+            position: relative;
+            background: var(--white);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            animation: fadeInUp 0.8s ease-out backwards;
+        }
+
+        .photo-card:nth-child(1) { animation-delay: 0.2s; }
+        .photo-card:nth-child(2) { animation-delay: 0.4s; }
+        .photo-card:nth-child(3) { animation-delay: 0.6s; }
+        .photo-card:nth-child(4) { animation-delay: 0.8s; }
+        .photo-card:nth-child(5) { animation-delay: 1s; }
+        .photo-card:nth-child(6) { animation-delay: 1.2s; }
+
+        .photo-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.15);
+        }
+
+        .photo-placeholder {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: var(--white);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .photo-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .photo-placeholder .photo-fallback {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: var(--white);
+        }
+
+        .photo-placeholder .photo-fallback.show {
+            display: flex;
+        }
+
+        .photo-placeholder::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .photo-caption {
+            padding: 30px;
+        }
+
+        .photo-caption h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+
+        .photo-caption p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text);
+        }
+
+        /* Love Letter Section */
+        .love-letter {
+            background: var(--white);
+            padding: 80px 60px;
+            margin: 80px auto;
+            max-width: 800px;
+            border-radius: 20px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.1);
+            position: relative;
+            animation: fadeIn 1s ease-out 1.5s backwards;
+        }
+
+        .love-letter::before {
+            content: '"';
+            position: absolute;
+            top: 20px;
+            left: 30px;
+            font-size: 120px;
+            color: var(--secondary);
+            font-family: 'Playfair Display', serif;
+        }
+
+        .love-letter h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--accent);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .love-letter p {
+            font-size: 1.3rem;
+            line-height: 2;
+            margin-bottom: 25px;
+            text-align: justify;
+        }
+
+        .signature {
+            text-align: right;
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--primary);
+            margin-top: 40px;
+            font-style: italic;
+        }
+
+        /* Timeline Section */
+        .timeline {
+            margin: 80px 0;
+            padding: 40px 20px;
+        }
+
+        .timeline h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            color: var(--accent);
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 40px;
+            margin-bottom: 60px;
+            align-items: center;
+            animation: fadeInLeft 0.8s ease-out backwards;
+        }
+
+        .timeline-item:nth-child(even) {
+            flex-direction: row-reverse;
+            animation: fadeInRight 0.8s ease-out backwards;
+        }
+
+        .timeline-date {
+            min-width: 150px;
+            text-align: center;
+        }
+
+        .timeline-date .circle {
+            width: 80px;
+            height: 80px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-size: 2rem;
+            color: var(--white);
+            box-shadow: 0 10px 30px rgba(212, 165, 154, 0.3);
+        }
+
+        .timeline-date .date-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            color: var(--accent);
+        }
+
+        .timeline-content {
+            flex: 1;
+            background: var(--white);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        .timeline-content h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: var(--accent);
+            margin-bottom: 15px;
+        }
+
+        .timeline-content p {
+            font-size: 1.15rem;
+            line-height: 1.8;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Final Message */
+        .final-message {
+            text-align: center;
+            padding: 100px 20px;
+            animation: fadeIn 1s ease-out 2s backwards;
+        }
+
+        .final-message h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            color: var(--accent);
+            margin-bottom: 30px;
+        }
+
+        .final-message p {
+            font-size: 1.5rem;
+            color: var(--primary);
+            font-style: italic;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .photo-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .timeline-item,
+            .timeline-item:nth-child(even) {
+                flex-direction: column;
+            }
+
+            .love-letter {
+                padding: 40px 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating hearts background -->
+    <div class="hearts-container" id="heartsContainer"></div>
+
+    <div class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1>To My Darling</h1>
+            <p class="subtitle">Every moment with you is a treasure</p>
+        </section>
+
+        <!-- Photo Gallery -->
+        <section class="photo-grid">
+            <div class="photo-card">
+                <div class="photo-placeholder">
+                    <img src="New folder/WhatsApp Image 2026-02-13 at 20.02.12 (1).jpeg" alt="The First Glance" onerror="this.style.display='none'; this.nextElementSibling.classList.add('show')">
+                    <span class="photo-fallback">♥</span>
+                </div>
+                <div class="photo-caption">
+                    <h3>Our First Adventure</h3>
+                    <p>From the moment our eyes met, I knew my life would never be the same. You walked into my world and filled it with light.</p>
+                </div>
+            </div>
+
+            <div class="photo-card">
+                <div class="photo-placeholder">
+                    <img src="New folder/WhatsApp Image 2026-02-13 at 20.02.12.jpeg" alt="Our First Adventure" onerror="this.style.display='none'; this.nextElementSibling.classList.add('show')">
+                    <span class="photo-fallback">♥</span>
+                </div>
+                <div class="photo-caption">
+                    <h3>Adventures Together</h3>
+                    <p>Every journey with you is an adventure. Together, we've created memories that I'll cherish for a lifetime.</p>
+                </div>
+            </div>
+
+            <div class="photo-card">
+                <div class="photo-placeholder">
+                    <img src="New folder/WhatsApp Image 2026-02-13 at 20.02.13 (1).jpeg" alt="Laughter and Joy" onerror="this.style.display='none'; this.nextElementSibling.classList.add('show')">
+                    <span class="photo-fallback">♥</span>
+                </div>
+                <div class="photo-caption">
+                    <h3>Laughter and Joy</h3>
+                    <p>Your smile is my favorite sight in the world. The sound of your laughter is the sweetest melody to my ears.</p>
+                </div>
+            </div>
+
+            <div class="photo-card">
+                <div class="photo-placeholder">
+                    <img src="New folder/WhatsApp Image 2026-02-13 at 20.02.13 (2).jpeg" alt="Quiet Moments" onerror="this.style.display='none'; this.nextElementSibling.classList.add('show')">
+                    <span class="photo-fallback">♥</span>
+                </div>
+                <div class="photo-caption">
+                    <h3>Quiet Moments</h3>
+                    <p>Sometimes the most beautiful moments are the quiet ones—just you and me, content in each other's presence.</p>
+                </div>
+            </div>
+
+            <div class="photo-card">
+                <div class="photo-placeholder">
+                    <img src="New folder/WhatsApp Image 2026-02-13 at 20.02.13.jpeg" alt="Our Love Grows" onerror="this.style.display='none'; this.nextElementSibling.classList.add('show')">
+                    <span class="photo-fallback">♥</span>
+                </div>
+                <div class="photo-caption">
+                    <h3>Our Love Grows</h3>
+                    <p>With each passing day, I fall more deeply in love with you. You are my heart, my soul, my everything.</p>
+                </div>
+            </div>
+
+            <div class="photo-card">
+                <div class="photo-placeholder">
+                    <img src="New folder/WhatsApp Image 2026-02-13 at 20.31.09.jpeg" alt="Forever and Always" onerror="this.style.display='none'; this.nextElementSibling.classList.add('show')">
+                    <span class="photo-fallback">♥</span>
+                </div>
+                <div class="photo-caption">
+                    <h3>Forever and Always</h3>
+                    <p>This is just the beginning of our forever. I can't wait to see where our love takes us next.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Love Letter -->
+        <section class="love-letter">
+            <h2>A Letter to You</h2>
+            <p>My Dearest Love,</p>
+            <p>Words seem inadequate to express the depth of my feelings for you. You have transformed my life in ways I never imagined possible. Your kindness, your warmth, your beautiful spirit—they captivate me completely.</p>
+            <p>Every day with you is a gift. You make me want to be a better person, to see the world through your eyes, to appreciate the small moments that make life so precious. Your love has taught me what it truly means to care for someone with all your heart.</p>
+            <p>When I look at you, I see my present and my future. I see lazy Sunday mornings and exciting adventures. I see quiet evenings and joyful celebrations. I see a lifetime of love, laughter, and endless possibilities.</p>
+            <p>Thank you for being you. Thank you for choosing me. Thank you for every smile, every kiss, every moment we've shared. You are my greatest blessing, and I promise to cherish you today, tomorrow, and always.</p>
+            <div class="signature">With all my love, always yours ♥<br>All my love, Fred</div>
+        </section>
+
+        <!-- Timeline -->
+        <section class="timeline">
+            <h2>Our Journey Together</h2>
+            
+            <div class="timeline-item">
+                <div class="timeline-date">
+                    <div class="circle">✨</div>
+                    <div class="date-text">The Beginning</div>
+                </div>
+                <div class="timeline-content">
+                    <h3>When We First Met</h3>
+                    <p>The universe conspired to bring us together, and I'm forever grateful it did. That day marked the start of the most beautiful chapter of my life.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-date">
+                    <div class="circle">💫</div>
+                    <div class="date-text">First Date</div>
+                </div>
+                <div class="timeline-content">
+                    <h3>Our First Real Date</h3>
+                    <p>Nervous excitement, genuine connection, and the realization that I had found someone truly special. Every moment felt like magic.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-date">
+                    <div class="circle">💝</div>
+                    <div class="date-text">Falling Deeper</div>
+                </div>
+                <div class="timeline-content">
+                    <h3>The Moment I Knew</h3>
+                    <p>There was a moment when I realized this wasn't just attraction or infatuation—this was real, deep, and lasting love.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-date">
+                    <div class="circle">🌟</div>
+                    <div class="date-text">Today & Beyond</div>
+                </div>
+                <div class="timeline-content">
+                    <h3>Every Day Since</h3>
+                    <p>And here we are, continuing to build our story together. Each day brings new reasons to love you, new memories to cherish, new dreams to chase hand in hand.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Final Message -->
+        <section class="final-message">
+            <h2>I Love You</h2>
+            <p>More than words could ever say ♥</p>
+        </section>
+    </div>
+
+    <script>
+        // Create floating hearts
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.innerHTML = '♥';
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.animationDuration = (Math.random() * 10 + 10) + 's';
+            heart.style.animationDelay = Math.random() * 5 + 's';
+            heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+            document.getElementById('heartsContainer').appendChild(heart);
+
+            // Remove heart after animation
+            setTimeout(() => {
+                heart.remove();
+            }, 20000);
+        }
+
+        // Create initial hearts
+        for (let i = 0; i < 15; i++) {
+            setTimeout(createHeart, i * 1000);
+        }
+
+        // Continue creating hearts
+        setInterval(createHeart, 2000);
+    </script>
+</body>
+</html>
